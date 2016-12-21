@@ -48,6 +48,34 @@ The API will provide different endpoints for each case:
 
 This endpoint will allow to insert a document with new data (according to the [data model](#database)). It should validate the input data against the data model.
 
+### Population by city (its last record) and age
+
+This endpoint will return the most-updated record of each city.
+
+```
+[
+    {
+        "city": "Madrid",
+        "ts": 1429521853000
+        "population": [
+            {"age": 20, "count": 1000},
+            {"age": 24, "count": 1343},
+            {"age": 37, "count": 100},
+            {"age": 50, "count": 2000}
+        ]
+    },
+
+        "city": "Galicia",
+        "ts": 1482339749000
+        "population": [
+            {"age": 17, "count": 1000},
+            {"age": 56, "count": 1343},
+            {"age": 78, "count": 100}
+        ]
+    }
+]
+```
+
 ### Population by city
 
 This endpoint will return the population (`count`) by ascending age (`age`) of the city specified in the URL. It will use the latest document of each city for each age (if latest document doesn't have that age, it will use an older one):
@@ -123,35 +151,6 @@ This endpoint will return the Historical census statistics of each city. So, for
             "max": 10000,
             "min": 3500
         }
-    }
-]
-```
-
-
-### Population by city (its last record) and age
-
-This endpoint will return the most-updated record of each city.
-
-```
-[
-    {
-        "city": "Madrid",
-        "ts": 1429521853000
-        "population": [
-            {"age": 20, "count": 1000},
-            {"age": 24, "count": 1343},
-            {"age": 37, "count": 100},
-            {"age": 50, "count": 2000}
-        ]
-    },
-
-        "city": "Galicia",
-        "ts": 1482339749000
-        "population": [
-            {"age": 17, "count": 1000},
-            {"age": 56, "count": 1343},
-            {"age": 78, "count": 100}
-        ]
     }
 ]
 ```
