@@ -62,7 +62,7 @@ This endpoint will return the population (`count`) by ascending age (`age`) of t
         {"age": 37, "count": 100, "ts": 1429521853000}, // (2015)
         {"age": 50, "count": 2000, "ts": 1429521853000}, // (2015)
         {"age": 75, "count": 45, "ts": 1292950449000}, // (2010)
-        {"age": 99, "count": 2, "ts": 1292950449000}, // (2010)
+        {"age": 99, "count": 2, "ts": 1292950449000} // (2010)
     ]
 }
 ```
@@ -83,14 +83,14 @@ For each ascending age and using only the most-recent record of each city, this 
         "sum": 13023, // The total of people with this age across all cities.
         "mean": 535, // Mean total of population with this age across all cities.
         "max": 760, // Max peak of population with this age (this corresponds to one city, but it's not necessary to show which)
-        "min": 25, // Min number of population with this age (this corresponds to one city, but it's not necessary to show which)
+        "min": 25 // Min number of population with this age (this corresponds to one city, but it's not necessary to show which)
     },
     {
         "age": 24,
         "sum": 15644,
         "mean": 735,
         "max": 860,
-        "min": 50,
+        "min": 50
     }
 ]
 ```
@@ -142,6 +142,15 @@ This endpoint will return the most-updated record of each city.
             {"age": 24, "count": 1343},
             {"age": 37, "count": 100},
             {"age": 50, "count": 2000}
+        ]
+    },
+
+        "city": "Galicia",
+        "ts": 1482339749000
+        "population": [
+            {"age": 17, "count": 1000},
+            {"age": 56, "count": 1343},
+            {"age": 78, "count": 100}
         ]
     }
 ]
