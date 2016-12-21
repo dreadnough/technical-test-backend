@@ -6,15 +6,16 @@ This test app is an API that returns population census data from MongoDB. It has
 
 - Fork this repository and do everything in Github.
 - Use latest NodeJS ([Hapijs](https://hapijs.com) is our default, but Express or others is acceptable)
+- Follow REST principles as much as possible.
 - Use Javascript linter ([Hapijs's Lab](https://github.com/hapijs/lab) is our default, but any other is acceptable)
-- Try to cover your code with unit tests by 100 % ([Hapijs's Lab](https://github.com/hapijs/lab) is our default, but any other is acceptable)
-- Use Docker to run the whole app (docker-compose to run a local MongoDB and your app)
+- Try to cover your code with unit tests by ~80 % ([Hapijs's Lab](https://github.com/hapijs/lab) is our default, but any other is acceptable)
+- Use Docker to run the whole app (docker-compose is optional to run a local MongoDB and your app altogether)
 - Update the [How to run this app](#how-to-run-this-app) instructions on this README.
 
 ## Database
 
 A **local MongoDB database** will contain data with this data-model:
-````
+```
 {
 	"ts": 1429521853000,
 	"city": "Madrid",
@@ -24,8 +25,20 @@ A **local MongoDB database** will contain data with this data-model:
 		{"age": 37, "count": 100},
 		{"age": 50, "count": 2000}
 	]
+},
+{
+	"ts": 1482339388000,
+	"city": "Valencia",
+	"population": [
+		{"age": 10, "count": 340},
+		{"age": 29, "count": 1753},
+		{"age": 46, "count": 800},
+		{"age": 82, "count": 15}
+	]
 }
-`````
+```
+
+All queries on each endpoint should be made using the **“aggregation” framework of MongoDB**.
 
 ## API
 
@@ -33,38 +46,37 @@ The API will provide different endpoints for each case:
 
 ### Insert population data
 
-This endpoint will allow to insert a document with new data (according to the [data-model](#database))
+This endpoint will allow to insert a document with new data (according to the [data model](#database)). It should validate the input data against the data model.
 
 ### Population by city
 
-This endpoint will return the population by ascending age of the city specified in the URL. It will use the latest record for each age (if latest document doesn't have that age, it will use an older one):
+This endpoint will return the population (`count`) by ascending age (`age`) of the city specified in the URL. It will use the latest document of each city for each age (if latest document doesn't have that age, it will use an older one):
 
 ```
-[
+{
     "city": "Madrid",
     "populationRecords": [
-        {"age": 13, "count": 530, "ts": 142958759630},
-        {"age": 20, "count": 1000, "ts": 1429521853000},
-        {"age": 24, "count": 1343, "ts": 1429521853000},
-        {"age": 25, "count": 630, "ts": 142958759630},
-        {"age": 37, "count": 100, "ts": 1429521853000},
-        {"age": 50, "count": 2000, "ts": 1429521853000}
-        {"age": 75, "count": 45, "ts": 142958759630},
-        {"age": 99, "count": 2, "ts": 142958759630},
+        {"age": 20, "count": 1000, "ts": 1429521853000}, // This one is from the latest MongoDB document (2015)
+        {"age": 24, "count": 1343, "ts": 1429521853000}, // (2015)
+        {"age": 25, "count": 630, "ts": 1292950449000}, // This one is from an older record! (2010)
+        {"age": 37, "count": 100, "ts": 1429521853000}, // (2015)
+        {"age": 50, "count": 2000, "ts": 1429521853000}, // (2015)
+        {"age": 75, "count": 45, "ts": 1292950449000}, // (2010)
+        {"age": 99, "count": 2, "ts": 1292950449000}, // (2010)
     ]
-]
+}
 ```
 
 ### Population by all ages
 
-This endpoint will return for each ascending age, using only the most-recent record of each city:
+For each ascending age and using only the most-recent record of each city, this endpoint will return:
 
 - The SUM value of `count` of all cities.
 - The MEAN value of `count` of all cities.
 - The MAX value of `count` of all cities.
 - The MIN value of `count` of all cities.
 
-````
+```
 [
     {
         "age": 20,
@@ -81,7 +93,7 @@ This endpoint will return for each ascending age, using only the most-recent rec
         "min": 50,
     }
 ]
-````
+```
 
 ### Population by cities (of all time)
 
