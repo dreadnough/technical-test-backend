@@ -1,6 +1,6 @@
 # Technical test for backend
 
-This test app consists of a census API that retrieves data from MongoDB.
+This test app is an API that returns population census data from MongoDB. It has different endpoints of input and output and runs using Docker.
 
 ## Considerations
 
@@ -37,34 +37,48 @@ This endpoint will allow to insert a document with new data (according to the [d
 
 ### Population by city
 
-This endpoint will return the population by ascending age of the city specified in the URL.
+This endpoint will return the population by ascending age of the city specified in the URL. It will use the latest record for each age (if latest document doesn't have that age, it will use an older one):
 
-Using only the most-recent record of each city.
+```
+[
+    "city": "Madrid",
+    "populationRecords": [
+        {"age": 13, "count": 530, "ts": 142958759630},
+        {"age": 20, "count": 1000, "ts": 1429521853000},
+        {"age": 24, "count": 1343, "ts": 1429521853000},
+        {"age": 25, "count": 630, "ts": 142958759630},
+        {"age": 37, "count": 100, "ts": 1429521853000},
+        {"age": 50, "count": 2000, "ts": 1429521853000}
+        {"age": 75, "count": 45, "ts": 142958759630},
+        {"age": 99, "count": 2, "ts": 142958759630},
+    ]
+]
+```
 
 ### Population by all ages
 
-This endpoint will return for each ascending age:
+This endpoint will return for each ascending age, using only the most-recent record of each city:
 
 - The SUM value of `count` of all cities.
 - The MEAN value of `count` of all cities.
 - The MAX value of `count` of all cities.
 - The MIN value of `count` of all cities.
 
-Using only the most-recent record of each city.
-
 ````
 [
     {
         "age": 20,
-        "count": 1000,
-        "city": "Madrid",
-        "ts": 1429521853000
+        "sum": 13023, // The total of people with this age across all cities.
+        "mean": 535, // Mean total of population with this age across all cities.
+        "max": 760, // Max peak of population with this age (this corresponds to one city, but it's not necessary to show which)
+        "min": 25, // Min number of population with this age (this corresponds to one city, but it's not necessary to show which)
     },
     {
-        "age": 23,
-        "count": 1260,
-        "city": "Sevilla",
-        "ts": 1429522853000
+        "age": 24,
+        "sum": 15644,
+        "mean": 735,
+        "max": 860,
+        "min": 50,
     }
 ]
 ````
@@ -102,7 +116,7 @@ This endpoint will return the Historical census statistics of each city. So, for
 ```
 
 
-### Population by city and age of last record
+### Population by city (its last record) and age
 
 This endpoint will return the most-updated record of each city.
 
