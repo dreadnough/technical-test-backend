@@ -1,0 +1,19 @@
+web:
+  build: .
+  command: npm start
+  volumes:
+    - ./:/app
+  ports:
+    - "3000:3000"
+  links:
+    - mongo  
+mongo:
+  image: mongo
+  ports:
+    - "27017:27017"
+
+# Set Up MongoDB
+# mongosetup:
+#  build: ./mongoSetUp
+#  links:
+#    - mongo

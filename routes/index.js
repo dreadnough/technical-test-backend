@@ -9,30 +9,28 @@ router.get('/', function (req, res, next) {
 
 
 //Insert population data
-router.post('/citystats', function (req, res) {
+router.post('/stat', function (req, res) {
     var city = new cityStats({
         city: req.body.city,
         ts: req.body.ts,
         population: req.body.population
     });
-    city.save(function (err) {
-        if (err) {
-            res.status(500);
+    city.save(function (err,result) {
+        if (err) {            
             res.send(err);
-        } else {
-            res.status(200);
-            res.send('Done')
+        } else {            
+            res.send(result);
         }
     });
 });
 
 //Population by city (its last record) and age
-router.get('/citystats', function (req, res) {
+router.get('/stats', function (req, res) {
     cityStats.aggregate([
         { $sort: { ts: 1 } },
         {
             $group: {
-                _id: '$city',    // here is the problem - this is present in result
+                _id: '$city',   
                 ts: {"$last": '$ts'},
                 city: {$last: '$city'},
                 population: {$last: '$population'}
@@ -57,7 +55,7 @@ router.get('/citystats', function (req, res) {
 });
 
 //Population by city
-router.get('/citystat/:city', function (req, res) {
+router.get('/stat/:city', function (req, res) {    
     var city = req.params.city; // validation here
     cityStats.aggregate([
         { $match: { city: city } },
@@ -105,8 +103,7 @@ router.get('/citystat/:city', function (req, res) {
 });
 
 //Population by all ages
-router.get('/citystatallages', function (req, res) {
-    var city = req.params.city; // validation here
+router.get('/statbyages', function (req, res) {    
     cityStats.aggregate([
         { $unwind: '$population' },
         {
@@ -118,7 +115,7 @@ router.get('/citystatallages', function (req, res) {
                 ts: '$ts'
             }
         },
-        { $sort: { city: 1, age: 1, ts: -1 } },
+         { $sort: { city: 1, age: 1, ts: -1 } },
         {
             $group: {
                 _id: { city: '$city', age: '$age' },
@@ -134,7 +131,7 @@ router.get('/citystatallages', function (req, res) {
                 ts: '$ts',
                 count: '$count'
             }
-        },
+        },         
         {
             $group: {
                 _id: '$age',
@@ -167,8 +164,7 @@ router.get('/citystatallages', function (req, res) {
 
 
 //Population by cities (of all time)
-router.get('/citystatalltime', function (req, res) {
-    var city = req.params.city; // validation here
+router.get('/statbytime', function (req, res) {    
     cityStats.aggregate([
         { $unwind: '$population' },
         {

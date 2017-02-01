@@ -157,4 +157,18 @@ This endpoint will return the Historical census statistics of each city. So, for
 
 ## How to run this app
 
-> Update this section with the instructions of installing and running your app (have in mind the unknown environment in which it can run)
+With docker : docker-compose up
+SetUpMongoDB uncomment in Dockerfile and run first time
+#mongoSetUp:
+#  build: ./mongoSetUp
+#  links:
+#    - mongo
+Without docker: start MongoDB -> npm i -> npm start
+Set up MongoDB : mongoimport --host=mongo --port=27017 --db testForBackend --collection citystats --type json --file mongoSetUp.json --jsonArray
+Run tests : npm test
+Routes: 
+- Insert population data (POST) /stat
+- Population by city (its last record) and age (GET) /stats
+- Population by city (GET) /stat/:city  - (where :city -> cityname)
+- Population by all ages (GET) /statbyages
+- Population by cities (of all time) (GET) /statbytime
