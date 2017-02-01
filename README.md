@@ -166,7 +166,9 @@ mongoSetUp:
     - mongo
 ```
 Without docker: start MongoDB -> npm i -> npm start
+```
 Set up MongoDB : mongoimport --host=mongo --port=27017 --db testForBackend --collection citystats --type json --file mongoSetUp.json --jsonArray
+```
 Run tests : npm test
 Routes: 
 - Insert population data (POST) /stat
