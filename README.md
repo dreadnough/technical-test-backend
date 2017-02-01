@@ -158,13 +158,13 @@ This endpoint will return the Historical census statistics of each city. So, for
 ## How to run this app
 
 With docker : docker-compose up
-...
+```
 SetUpMongoDB uncomment in Dockerfile and run first time
 mongoSetUp:
   build: ./mongoSetUp
   links:
     - mongo
-...
+```
 Without docker: start MongoDB -> npm i -> npm start
 Set up MongoDB : mongoimport --host=mongo --port=27017 --db testForBackend --collection citystats --type json --file mongoSetUp.json --jsonArray
 Run tests : npm test
