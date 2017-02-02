@@ -157,7 +157,7 @@ This endpoint will return the Historical census statistics of each city. So, for
 
 ## How to run this app
 
-With docker : docker-compose up
+With docker : docker-compose build  -> docker_compose up
 ```
 SetUpMongoDB uncomment in Dockerfile and run first time
 mongoSetUp:
