@@ -173,6 +173,6 @@ Run tests : npm test
 ##Routes: 
 - Insert population data (POST) /stat
 - Population by city (its last record) and age (GET) /stats
-- Population by city (GET) /stat/:city  - (where :city -> cityname)
+- Population by city (GET) /stat/:city  - ( example:/stat/Madrid )
 - Population by all ages (GET) /statbyages
 - Population by cities (of all time) (GET) /statbytime

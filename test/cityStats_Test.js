@@ -44,7 +44,6 @@ var sityStat3 = {
     ]
 };
 
-//Our parent block
 describe('SityStats', function () {
     before(function (done) { //Before test we empty the database and fiil it with test data
         CityStats.remove({}, function (err) {
@@ -64,7 +63,7 @@ describe('SityStats', function () {
     describe('/POST Stat', function () {
         it('it should POST new sityStat ', function (done) {
             chai.request(App)
-                .post('/citystat')
+                .post('/stat')
                 .send(sityStat3)
                 .end(function (err, res) {
                     res.should.have.status(200);
