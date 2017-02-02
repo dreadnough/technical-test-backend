@@ -5,17 +5,19 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
-var env = require('./config/env');
+
+var node_env = process.env.NODE_ENV || 'dev';
+var env = require('./config/env')[node_env];
 
 var cityStat = require('./routes/cityStatistic');
 
 var app = express();
-
-if(process.env.NODE_ENV=='test'){
-    mongoose.connect(env.test.DBConnection);
-}else{
-    mongoose.connect(env.dev.DBConnection);
-}
+mongoose.connect(env.DBConnection);
+// if(process.env.NODE_ENV=='test'){
+//     mongoose.connect(env.test.DBConnection);
+// }else{
+//     mongoose.connect(env.dev.DBConnection);
+// }
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

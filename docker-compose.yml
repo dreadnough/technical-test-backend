@@ -1,12 +1,16 @@
 web:
   build: .
-  command: npm start
+  command: bash -c "sleep 2 && npm start"
   volumes:
     - ./:/app
   ports:
     - "3000:3000"
   links:
-    - mongo  
+    - mongo 
+  environment:
+    PORT: 3000
+    NODE_ENV: prod  
+  
 mongo:
   image: mongo
   ports:
